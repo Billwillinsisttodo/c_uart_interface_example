@@ -258,6 +258,8 @@ read_messages()
 			current_messages.sysid  = message.sysid;
 			current_messages.compid = message.compid;
 
+			// printf("MESSAGE ID - %i\n",message.msgid);
+
 			// Handle Message ID
 			switch (message.msgid)
 			{
@@ -267,7 +269,12 @@ read_messages()
 					//printf("MAVLINK_MSG_ID_HEARTBEAT\n");
 					mavlink_msg_heartbeat_decode(&message, &(current_messages.heartbeat));
 					current_messages.time_stamps.heartbeat = get_time_usec();
+
+					sorted_messages[message.sysid][message.compid].heartbeat             = current_messages.heartbeat;
+					sorted_messages[message.sysid][message.compid].time_stamps.heartbeat = current_messages.time_stamps.heartbeat;
+
 					this_timestamps.heartbeat = current_messages.time_stamps.heartbeat;
+
 					break;
 				}
 
@@ -276,6 +283,10 @@ read_messages()
 					//printf("MAVLINK_MSG_ID_SYS_STATUS\n");
 					mavlink_msg_sys_status_decode(&message, &(current_messages.sys_status));
 					current_messages.time_stamps.sys_status = get_time_usec();
+
+					sorted_messages[message.sysid][message.compid].sys_status             = current_messages.sys_status;
+					sorted_messages[message.sysid][message.compid].time_stamps.sys_status = current_messages.time_stamps.sys_status;
+
 					this_timestamps.sys_status = current_messages.time_stamps.sys_status;
 					break;
 				}
@@ -285,6 +296,10 @@ read_messages()
 					//printf("MAVLINK_MSG_ID_BATTERY_STATUS\n");
 					mavlink_msg_battery_status_decode(&message, &(current_messages.battery_status));
 					current_messages.time_stamps.battery_status = get_time_usec();
+
+					sorted_messages[message.sysid][message.compid].battery_status             = current_messages.battery_status;
+					sorted_messages[message.sysid][message.compid].time_stamps.battery_status = current_messages.time_stamps.battery_status;
+
 					this_timestamps.battery_status = current_messages.time_stamps.battery_status;
 					break;
 				}
@@ -294,6 +309,10 @@ read_messages()
 					//printf("MAVLINK_MSG_ID_RADIO_STATUS\n");
 					mavlink_msg_radio_status_decode(&message, &(current_messages.radio_status));
 					current_messages.time_stamps.radio_status = get_time_usec();
+
+					sorted_messages[message.sysid][message.compid].radio_status             = current_messages.radio_status;
+					sorted_messages[message.sysid][message.compid].time_stamps.radio_status = current_messages.time_stamps.radio_status;
+
 					this_timestamps.radio_status = current_messages.time_stamps.radio_status;
 					break;
 				}
@@ -303,6 +322,10 @@ read_messages()
 					//printf("MAVLINK_MSG_ID_LOCAL_POSITION_NED\n");
 					mavlink_msg_local_position_ned_decode(&message, &(current_messages.local_position_ned));
 					current_messages.time_stamps.local_position_ned = get_time_usec();
+
+					sorted_messages[message.sysid][message.compid].local_position_ned             = current_messages.local_position_ned;
+					sorted_messages[message.sysid][message.compid].time_stamps.local_position_ned = current_messages.time_stamps.local_position_ned;
+
 					this_timestamps.local_position_ned = current_messages.time_stamps.local_position_ned;
 					break;
 				}
@@ -312,6 +335,10 @@ read_messages()
 					//printf("MAVLINK_MSG_ID_GLOBAL_POSITION_INT\n");
 					mavlink_msg_global_position_int_decode(&message, &(current_messages.global_position_int));
 					current_messages.time_stamps.global_position_int = get_time_usec();
+
+					sorted_messages[message.sysid][message.compid].global_position_int             = current_messages.global_position_int;
+					sorted_messages[message.sysid][message.compid].time_stamps.global_position_int = current_messages.time_stamps.global_position_int;
+
 					this_timestamps.global_position_int = current_messages.time_stamps.global_position_int;
 					break;
 				}
@@ -321,6 +348,10 @@ read_messages()
 					//printf("MAVLINK_MSG_ID_POSITION_TARGET_LOCAL_NED\n");
 					mavlink_msg_position_target_local_ned_decode(&message, &(current_messages.position_target_local_ned));
 					current_messages.time_stamps.position_target_local_ned = get_time_usec();
+
+					sorted_messages[message.sysid][message.compid].position_target_local_ned             = current_messages.position_target_local_ned;
+					sorted_messages[message.sysid][message.compid].time_stamps.position_target_local_ned = current_messages.time_stamps.position_target_local_ned;
+
 					this_timestamps.position_target_local_ned = current_messages.time_stamps.position_target_local_ned;
 					break;
 				}
@@ -330,6 +361,10 @@ read_messages()
 					//printf("MAVLINK_MSG_ID_POSITION_TARGET_GLOBAL_INT\n");
 					mavlink_msg_position_target_global_int_decode(&message, &(current_messages.position_target_global_int));
 					current_messages.time_stamps.position_target_global_int = get_time_usec();
+
+					sorted_messages[message.sysid][message.compid].position_target_global_int             = current_messages.position_target_global_int;
+					sorted_messages[message.sysid][message.compid].time_stamps.position_target_global_int = current_messages.time_stamps.position_target_global_int;
+
 					this_timestamps.position_target_global_int = current_messages.time_stamps.position_target_global_int;
 					break;
 				}
@@ -339,6 +374,10 @@ read_messages()
 					//printf("MAVLINK_MSG_ID_HIGHRES_IMU\n");
 					mavlink_msg_highres_imu_decode(&message, &(current_messages.highres_imu));
 					current_messages.time_stamps.highres_imu = get_time_usec();
+
+					sorted_messages[message.sysid][message.compid].highres_imu             = current_messages.highres_imu;
+					sorted_messages[message.sysid][message.compid].time_stamps.highres_imu = current_messages.time_stamps.highres_imu;
+
 					this_timestamps.highres_imu = current_messages.time_stamps.highres_imu;
 					break;
 				}
@@ -348,6 +387,10 @@ read_messages()
 					//printf("MAVLINK_MSG_ID_ATTITUDE\n");
 					mavlink_msg_attitude_decode(&message, &(current_messages.attitude));
 					current_messages.time_stamps.attitude = get_time_usec();
+
+					sorted_messages[message.sysid][message.compid].attitude             = current_messages.attitude;
+					sorted_messages[message.sysid][message.compid].time_stamps.attitude = current_messages.time_stamps.attitude;
+
 					this_timestamps.attitude = current_messages.time_stamps.attitude;
 					break;
 				}
@@ -626,6 +669,7 @@ start()
 	// --------------------------------------------------------------------------
 	//   GET INITIAL POSITION
 	// --------------------------------------------------------------------------
+	printf("GET INITIAL POSITION\n");
 
 	// Wait for initial position ned
 	while ( not ( current_messages.time_stamps.local_position_ned &&
@@ -635,7 +679,7 @@ start()
 	}
 
 	// copy initial position ned
-	Vehicle_Messages local_data = current_messages;
+	Mavlink_Messages local_data = current_messages;
 	initial_position.x        = local_data.local_position_ned.x;
 	initial_position.y        = local_data.local_position_ned.y;
 	initial_position.z        = local_data.local_position_ned.z;
@@ -650,7 +694,6 @@ start()
 	printf("\n");
 
 	// we need this before starting the write thread
-
 
 	// --------------------------------------------------------------------------
 	//   WRITE THREAD
