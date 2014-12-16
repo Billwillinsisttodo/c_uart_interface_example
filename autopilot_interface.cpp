@@ -54,6 +54,7 @@
 
 #include "autopilot_interface.h"
 
+#include <math.h>
 
 // ----------------------------------------------------------------------------------
 //   Time
@@ -154,6 +155,10 @@ set_acceleration(float ax, float ay, float az, mavlink_set_position_target_local
 void
 set_yaw(float yaw, mavlink_set_position_target_local_ned_t &sp)
 {
+
+	while ( yaw > 2.*M_PI ) yaw -= 2.*M_PI;
+	while ( yaw < 0.      ) yaw += 2.*M_PI;
+
 	sp.type_mask &=
 		MAVLINK_MSG_SET_POSITION_TARGET_LOCAL_NED_YAW_ANGLE ;
 
