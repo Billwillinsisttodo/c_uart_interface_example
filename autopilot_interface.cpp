@@ -244,7 +244,7 @@ read_messages()
 	Time_Stamps this_timestamps;
 
 	// Blocking wait for new data
-	while ( not received_all )
+	while ( not received_all and not time_to_exit )
 	{
 		// ----------------------------------------------------------------------
 		//   READ MESSAGE
@@ -636,7 +636,7 @@ start()
 	while ( not current_messages.sysid )
 	{
 		if ( time_to_exit )
-			throw 0;
+			return;
 		usleep(500000); // check at 2Hz
 	}
 
@@ -680,6 +680,8 @@ start()
 	while ( not ( current_messages.time_stamps.local_position_ned &&
 				  current_messages.time_stamps.attitude            )  )
 	{
+		if ( time_to_exit )
+			return;
 		usleep(500000);
 	}
 
@@ -798,8 +800,9 @@ void
 Autopilot_Interface::
 handle_quit( int sig )
 {
+
 	disable_offboard_control();
-	// autopilot interface
+
 	try {
 		stop();
 
