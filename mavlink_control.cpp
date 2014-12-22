@@ -172,7 +172,7 @@ commands(Autopilot_Interface &api)
 	//   START OFFBOARD MODE
 	// --------------------------------------------------------------------------
 
-	api.enable_offboard_control();
+//	api.enable_offboard_control();
 	usleep(100); // give some time to let it sink in
 
 	// now the autopilot is accepting setpoint commands
@@ -191,16 +191,16 @@ commands(Autopilot_Interface &api)
 
 
 	// Example 1 - Set Velocity
-//	set_velocity( -1.0       , // [m/s]
-//				  -1.0       , // [m/s]
-//				   0.0       , // [m/s]
-//				   sp        );
+	set_velocity( -1.0       , // [m/s]
+				  -1.0       , // [m/s]
+				   0.0       , // [m/s]
+				   sp        );
 
 	// Example 2 - Set Position
-	 set_position( ip.x - 5.0 , // [m]
-			 	   ip.y - 5.0 , // [m]
-				   ip.z       , // [m]
-				   sp         );
+//	 set_position( ip.x - 5.0 , // [m]
+//			 	   ip.y - 5.0 , // [m]
+//				   ip.z       , // [m]
+//				   sp         );
 
 
 	// Example 1.2 - Append Yaw Command
@@ -212,10 +212,11 @@ commands(Autopilot_Interface &api)
 	// NOW pixhawk will try to move
 
 	// Wait for 8 seconds, check position
-	for (int i=0; i < 8; i++)
+	for (int i=0; i < 18; i++)
 	{
 		mavlink_local_position_ned_t pos = api.current_messages.local_position_ned;
 		printf("%i CURRENT POSITION XYZ = [ % .4f , % .4f , % .4f ] \n", i, pos.x, pos.y, pos.z);
+		printf("%i CURRENT VELOCITY UVW = [ % .4f , % .4f , % .4f ] \n", i, pos.vx, pos.vy, pos.vz);
 		sleep(1);
 	}
 
@@ -226,7 +227,7 @@ commands(Autopilot_Interface &api)
 	//   STOP OFFBOARD MODE
 	// --------------------------------------------------------------------------
 
-	api.disable_offboard_control();
+//	api.disable_offboard_control();
 
 	// now pixhawk isn't listening to setpoint commands
 
