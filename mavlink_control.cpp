@@ -172,8 +172,8 @@ commands(Autopilot_Interface &api)
 	//   START OFFBOARD MODE
 	// --------------------------------------------------------------------------
 
-	api.enable_offboard_control();
-	usleep(100); // give some time to let it sink in
+	//api.enable_offboard_control();
+	//usleep(100); // give some time to let it sink in
 
 	// now the autopilot is accepting setpoint commands
 
@@ -189,18 +189,23 @@ commands(Autopilot_Interface &api)
 
 	// autopilot_interface.h provides some helper functions to build the command
 
-
+// master - ok
+// offboard - no movement
 	// Example 1 - Set Velocity
-//	set_velocity( -1.0       , // [m/s]
-//				  -1.0       , // [m/s]
-//				   0.0       , // [m/s]
-//				   sp        );
+	set_velocity( -1.0       , // [m/s]  
+		       0.0       , // [m/s]
+		       0.0       , // [m/s]
+	     	       sp        );
 
+// master - poor commands high velocities, but doesent fall out of sky
+// offboard - same
+// both - yaw works
 	// Example 2 - Set Position
-	 set_position( ip.x - 5.0 , // [m]
-			 	   ip.y - 5.0 , // [m]
-				   ip.z       , // [m]
-				   sp         );
+//	 set_position( ip.x - 5.0       , // [m]
+//	       ip.y       , // [m]
+//		       ip.z       , // [m]
+//		       sp         );
+
 
 
 	// Example 1.2 - Append Yaw Command
@@ -212,7 +217,7 @@ commands(Autopilot_Interface &api)
 	// NOW pixhawk will try to move
 
 	// Wait for 8 seconds, check position
-	for (int i=0; i < 8; i++)
+	for (int i=0; i < 30; i++)
 	{
 		mavlink_local_position_ned_t pos = api.current_messages.local_position_ned;
 		printf("%i CURRENT POSITION XYZ = [ % .4f , % .4f , % .4f ] \n", i, pos.x, pos.y, pos.z);
@@ -226,7 +231,7 @@ commands(Autopilot_Interface &api)
 	//   STOP OFFBOARD MODE
 	// --------------------------------------------------------------------------
 
-	api.disable_offboard_control();
+	//api.disable_offboard_control();
 
 	// now pixhawk isn't listening to setpoint commands
 
@@ -246,7 +251,7 @@ commands(Autopilot_Interface &api)
 
 	// hires imu
 	mavlink_highres_imu_t imu = messages.highres_imu;
-	printf("Got message HIGHRES_IMU (spec: https://pixhawk.ethz.ch/mavlink/#HIGHRES_IMU)\n");
+	printf("Got message HIGHRES_IMU (spec: https://pixhawk.ethz.ch/mavlink/#HIGHRES_I	MU)\n");
 	printf("    ap time:     %lu \n", imu.time_usec);
 	printf("    acc  (NED):  % f % f % f (m/s^2)\n", imu.xacc , imu.yacc , imu.zacc );
 	printf("    gyro (NED):  % f % f % f (rad/s)\n", imu.xgyro, imu.ygyro, imu.zgyro);
